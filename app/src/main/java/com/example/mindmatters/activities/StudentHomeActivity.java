@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mindmatters.R;
 import com.example.mindmatters.classes.Appointment;
+import com.example.mindmatters.classes.Counsellor;
 import com.example.mindmatters.classes.User;
 import com.example.mindmatters.fragments.AppointmentDetailsFragment;
 import com.example.mindmatters.fragments.AppointmentsFragment;
@@ -63,11 +64,11 @@ public class StudentHomeActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void openBooking(User counsellor) {
+    public void openBooking(Counsellor counsellor) {
         openDetailFragment(BookingFragment.newInstance(counsellor));
     }
 
-    public void openCounsellorDetails(User counsellor) {
+    public void openCounsellorDetails(Counsellor counsellor) {
         openDetailFragment(CounsellorDetailsFragment.newInstance(counsellor));
     }
 

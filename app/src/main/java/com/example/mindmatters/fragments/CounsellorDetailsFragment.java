@@ -11,13 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mindmatters.R;
-import com.example.mindmatters.classes.AvailableSlot;
-import com.example.mindmatters.classes.User;
+import com.example.mindmatters.classes.Counsellor;
 
 public class CounsellorDetailsFragment extends Fragment {
     private static final String ARG_COUNSELLOR = "arg_counsellor";
 
-    public static CounsellorDetailsFragment newInstance(User counsellor) {
+    public static CounsellorDetailsFragment newInstance(Counsellor counsellor) {
         CounsellorDetailsFragment fragment = new CounsellorDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_COUNSELLOR, counsellor);
@@ -37,9 +36,9 @@ public class CounsellorDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        User counsellor = null;
+        Counsellor counsellor = null;
         if (getArguments() != null) {
-            counsellor = (User) getArguments().getSerializable(ARG_COUNSELLOR);
+            counsellor = (Counsellor) getArguments().getSerializable(ARG_COUNSELLOR);
         }
         if (counsellor == null) {
             return;
@@ -52,23 +51,9 @@ public class CounsellorDetailsFragment extends Fragment {
         TextView slotsText = view.findViewById(R.id.details_slots);
 
         nameText.setText(counsellor.getName());
-        specialityText.setText(counsellor.getSpeciality());
-        experienceText.setText("Experience: " + counsellor.getYearsExperience() + " years");
-        bioText.setText("Bio: " + counsellor.getBio());
-
-        StringBuilder slotBuilder = new StringBuilder("Available time slots:\n");
-        if (counsellor.getAvailableSlots().isEmpty()) {
-            slotBuilder.append("No slots added yet.");
-        } else {
-            for (AvailableSlot slot : counsellor.getAvailableSlots()) {
-                slotBuilder.append(slot.getDayOfWeek())
-                        .append(" ")
-                        .append(slot.getStartTime())
-                        .append(" - ")
-                        .append(slot.getEndTime())
-                        .append("\n");
-            }
-        }
-        slotsText.setText(slotBuilder.toString().trim());
+        specialityText.setText(counsellor.getProfile().getSpeciality());
+        experienceText.setText("Experience: " + counsellor.getProfile().getYearsExperience() + " years");
+        bioText.setText("Bio: " + counsellor.getProfile().getBio());
+        slotsText.setText(counsellor.getSchedule().buildAvailableSlotsText());
     }
 }

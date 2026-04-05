@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mindmatters.R;
 import com.example.mindmatters.activities.StudentHomeActivity;
 import com.example.mindmatters.adapters.CounsellorAdapter;
-import com.example.mindmatters.classes.User;
+import com.example.mindmatters.classes.Counsellor;
+import com.example.mindmatters.classes.Student;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class StudentHomeFragment extends Fragment {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private CounsellorAdapter adapter;
     private ProgressBar progressBar;
     private TextView emptyText;
@@ -46,14 +49,14 @@ public class StudentHomeFragment extends Fragment {
         emptyText = view.findViewById(R.id.empty_counsellors_text);
         adapter = new CounsellorAdapter(new CounsellorAdapter.CounsellorActionListener() {
             @Override
-            public void onBookSession(User counsellor) {
+            public void onBookSession(Counsellor counsellor) {
                 if (getActivity() instanceof StudentHomeActivity) {
                     ((StudentHomeActivity) getActivity()).openBooking(counsellor);
                 }
             }
 
             @Override
-            public void onViewDetails(User counsellor) {
+            public void onViewDetails(Counsellor counsellor) {
                 if (getActivity() instanceof StudentHomeActivity) {
                     ((StudentHomeActivity) getActivity()).openCounsellorDetails(counsellor);
                 }
@@ -65,6 +68,15 @@ public class StudentHomeFragment extends Fragment {
     }
 
     private void loadCounsellors() {
+        Student currentStudent = new Student();
+        if (auth.getCurrentUser() != null) {
+            currentStudent.setUserId(auth.getCurrentUser().getUid());
+        }
+        if (!currentStudent.canViewCounsellors()) {
+            emptyText.setVisibility(View.VISIBLE);
+            return;
+        }
+
         progressBar.setVisibility(View.VISIBLE);
         emptyText.setVisibility(View.GONE);
         db.collection("users")
@@ -72,11 +84,11 @@ public class StudentHomeFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     progressBar.setVisibility(View.GONE);
-                    List<User> counsellors = new ArrayList<>();
+                    List<Counsellor> counsellors = new ArrayList<>();
                     for (var document : queryDocumentSnapshots.getDocuments()) {
-                        User user = document.toObject(User.class);
-                        if (user != null) {
-                            counsellors.add(user);
+                        Counsellor counsellor = document.toObject(Counsellor.class);
+                        if (counsellor != null) {
+                            counsellors.add(counsellor);
                         }
                     }
                     adapter.submitList(counsellors);

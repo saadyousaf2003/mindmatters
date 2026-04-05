@@ -18,6 +18,7 @@ import com.example.mindmatters.R;
 import com.example.mindmatters.activities.StudentHomeActivity;
 import com.example.mindmatters.adapters.AppointmentAdapter;
 import com.example.mindmatters.classes.Appointment;
+import com.example.mindmatters.classes.Student;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -76,10 +77,12 @@ public class AppointmentsFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     progressBar.setVisibility(View.GONE);
+                    Student currentStudent = new Student();
+                    currentStudent.setUserId(auth.getCurrentUser().getUid());
                     List<Appointment> appointments = new ArrayList<>();
                     for (var document : queryDocumentSnapshots.getDocuments()) {
                         Appointment appointment = document.toObject(Appointment.class);
-                        if (appointment != null) {
+                        if (currentStudent.canTrackAppointment(appointment)) {
                             appointments.add(appointment);
                         }
                     }

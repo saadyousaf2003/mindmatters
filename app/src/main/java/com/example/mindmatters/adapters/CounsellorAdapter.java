@@ -10,20 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mindmatters.R;
-import com.example.mindmatters.classes.User;
+import com.example.mindmatters.classes.Counsellor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CounsellorAdapter extends RecyclerView.Adapter<CounsellorAdapter.CounsellorViewHolder> {
-    private final List<User> counsellors = new ArrayList<>();
+    private final List<Counsellor> counsellors = new ArrayList<>();
     private final CounsellorActionListener listener;
 
     public CounsellorAdapter(CounsellorActionListener listener) {
         this.listener = listener;
     }
 
-    public void submitList(List<User> users) {
+    public void submitList(List<Counsellor> users) {
         counsellors.clear();
         counsellors.addAll(users);
         notifyDataSetChanged();
@@ -38,25 +38,12 @@ public class CounsellorAdapter extends RecyclerView.Adapter<CounsellorAdapter.Co
 
     @Override
     public void onBindViewHolder(@NonNull CounsellorViewHolder holder, int position) {
-        User counsellor = counsellors.get(position);
+        Counsellor counsellor = counsellors.get(position);
         holder.nameText.setText(counsellor.getName());
-        holder.specialityText.setText("Specialization: " + counsellor.getSpeciality());
-        holder.modesText.setText(buildMeetingModesText(counsellor));
+        holder.specialityText.setText("Specialization: " + counsellor.getProfile().getSpeciality());
+        holder.modesText.setText(counsellor.getSchedule().getMeetingModesText());
         holder.bookButton.setOnClickListener(v -> listener.onBookSession(counsellor));
         holder.detailsButton.setOnClickListener(v -> listener.onViewDetails(counsellor));
-    }
-
-    private String buildMeetingModesText(User counsellor) {
-        if (counsellor.isSupportsOnline() && counsellor.isSupportsInPerson()) {
-            return "Meeting modes: Online, In Person";
-        }
-        if (counsellor.isSupportsOnline()) {
-            return "Meeting modes: Online";
-        }
-        if (counsellor.isSupportsInPerson()) {
-            return "Meeting modes: In Person";
-        }
-        return "Meeting modes: Not available";
     }
 
     @Override
@@ -82,7 +69,7 @@ public class CounsellorAdapter extends RecyclerView.Adapter<CounsellorAdapter.Co
     }
 
     public interface CounsellorActionListener {
-        void onBookSession(User counsellor);
-        void onViewDetails(User counsellor);
+        void onBookSession(Counsellor counsellor);
+        void onViewDetails(Counsellor counsellor);
     }
 }

@@ -27,6 +27,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.mindmatters.classes.User;
 import com.example.mindmatters.classes.AvailableSlot;
+import com.example.mindmatters.classes.Counsellor;
+import com.example.mindmatters.classes.Student;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,14 +125,19 @@ public class RegistrationActivity extends AppCompatActivity {
                                         } else {
                                             type = "counsellor";
                                         }
-                                        User user = new User(firebaseUser.getUid(), fullname, email, type);
+                                        User user;
                                         if ("counsellor".equals(type)) {
-                                            user.setBio("Counsellor profile setup in progress.");
-                                            user.setSpeciality("Student Wellbeing");
-                                            user.setYearsExperience(1);
-                                            user.setSupportsOnline(true);
-                                            user.setSupportsInPerson(true);
-                                            user.setAvailableSlots(buildDefaultCounsellorSlots());
+                                            Counsellor counsellor = new Counsellor(firebaseUser.getUid(), fullname, email);
+                                            counsellor.setBio("Counsellor profile setup in progress.");
+                                            counsellor.setSpeciality("Student Wellbeing");
+                                            counsellor.setYearsExperience(1);
+                                            counsellor.setSupportsOnline(true);
+                                            counsellor.setSupportsInPerson(true);
+                                            counsellor.setAvailableSlots(buildDefaultCounsellorSlots());
+                                            user = counsellor;
+                                        } else {
+                                            Student student = new Student(firebaseUser.getUid(), fullname, email);
+                                            user = student;
                                         }
 
                                         // save user to db

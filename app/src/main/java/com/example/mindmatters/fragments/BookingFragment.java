@@ -20,7 +20,8 @@ import com.example.mindmatters.R;
 import com.example.mindmatters.activities.StudentHomeActivity;
 import com.example.mindmatters.adapters.BookingSlotAdapter;
 import com.example.mindmatters.classes.Appointment;
-import com.example.mindmatters.classes.User;
+import com.example.mindmatters.classes.Counsellor;
+import com.example.mindmatters.classes.Student;
 import com.example.mindmatters.utils.StudentBookingUtils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +39,8 @@ public class BookingFragment extends Fragment {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
-    private User counsellor;
+    private Counsellor counsellor;
+    private Student currentStudent;
     private LocalDate selectedWeekStart;
     private BookingSlotAdapter slotAdapter;
     private Spinner meetingModeSpinner;
@@ -46,7 +48,7 @@ public class BookingFragment extends Fragment {
     private TextView noSlotsText;
     private Button confirmBookingButton;
 
-    public static BookingFragment newInstance(User counsellor) {
+    public static BookingFragment newInstance(Counsellor counsellor) {
         BookingFragment fragment = new BookingFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_COUNSELLOR, counsellor);
@@ -67,7 +69,7 @@ public class BookingFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
-            counsellor = (User) getArguments().getSerializable(ARG_COUNSELLOR);
+            counsellor = (Counsellor) getArguments().getSerializable(ARG_COUNSELLOR);
         }
         if (counsellor == null) {
             Toast.makeText(requireContext(), "Unable to load booking screen.", Toast.LENGTH_SHORT).show();
@@ -86,8 +88,12 @@ public class BookingFragment extends Fragment {
         RecyclerView slotsRecycler = view.findViewById(R.id.slots_recycler);
 
         titleText.setText("Book with " + counsellor.getName());
-        specialityText.setText("Specialization: " + counsellor.getSpeciality());
+        specialityText.setText("Specialization: " + counsellor.getProfile().getSpeciality());
         selectedWeekStart = StudentBookingUtils.getStartOfWeek(LocalDate.now());
+        currentStudent = new Student();
+        if (auth.getCurrentUser() != null) {
+            currentStudent.setUserId(auth.getCurrentUser().getUid());
+        }
 
         slotAdapter = new BookingSlotAdapter();
         slotsRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -110,13 +116,7 @@ public class BookingFragment extends Fragment {
     }
 
     private void setupMeetingModes() {
-        List<String> meetingModes = new ArrayList<>();
-        if (counsellor.isSupportsOnline()) {
-            meetingModes.add("Online");
-        }
-        if (counsellor.isSupportsInPerson()) {
-            meetingModes.add("In Person");
-        }
+        List<String> meetingModes = new ArrayList<>(counsellor.getSchedule().getAvailableMeetingModes());
         if (meetingModes.isEmpty()) {
             meetingModes.add("No meeting modes available");
             confirmBookingButton.setEnabled(false);
@@ -128,7 +128,7 @@ public class BookingFragment extends Fragment {
 
     private void renderCurrentWeek() {
         weekRangeText.setText(StudentBookingUtils.buildWeekLabel(selectedWeekStart));
-        List<StudentBookingUtils.DisplaySlot> displaySlots = StudentBookingUtils.toDisplaySlots(counsellor.getAvailableSlots(), selectedWeekStart);
+        List<StudentBookingUtils.DisplaySlot> displaySlots = StudentBookingUtils.toDisplaySlots(counsellor.getSchedule().getAvailableSlots(), selectedWeekStart);
         slotAdapter.submitList(displaySlots);
         noSlotsText.setVisibility(displaySlots.isEmpty() ? View.VISIBLE : View.GONE);
     }
@@ -136,6 +136,11 @@ public class BookingFragment extends Fragment {
     private void confirmBooking() {
         if (auth.getCurrentUser() == null) {
             Toast.makeText(requireContext(), "Please log in again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!currentStudent.canBookAppointmentWith(counsellor)) {
+            Toast.makeText(requireContext(), "This counsellor is not accepting bookings yet.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -182,8 +187,8 @@ public class BookingFragment extends Fragment {
             appointment.setStudentId(studentId);
             appointment.setCounsellorId(counsellor.getUserId());
             appointment.setCounsellorName(counsellor.getName());
-            appointment.setCounsellorSpeciality(counsellor.getSpeciality());
-            appointment.setCounsellorImageUrl(counsellor.getProfileImageUrl());
+            appointment.setCounsellorSpeciality(counsellor.getProfile().getSpeciality());
+            appointment.setCounsellorImageUrl(counsellor.getProfile().getProfileImageUrl());
             appointment.setAppointmentDate(selectedSlot.getAppointmentDate());
             appointment.setStartTime(selectedSlot.getStartTime());
             appointment.setEndTime(selectedSlot.getEndTime());

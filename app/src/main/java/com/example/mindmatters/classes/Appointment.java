@@ -125,4 +125,25 @@ public class Appointment implements Serializable {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
+    public boolean belongsToStudent(String studentId) {
+        return studentId != null && studentId.equals(this.studentId);
+    }
+
+    public boolean matchesTimeBlock(String appointmentDate, String startTime, String endTime) {
+        return equalsValue(this.appointmentDate, appointmentDate)
+                && equalsValue(this.startTime, startTime)
+                && equalsValue(this.endTime, endTime);
+    }
+
+    public boolean isBooked() {
+        return "BOOKED".equalsIgnoreCase(status);
+    }
+
+    private boolean equalsValue(String first, String second) {
+        if (first == null) {
+            return second == null;
+        }
+        return first.equals(second);
+    }
 }
