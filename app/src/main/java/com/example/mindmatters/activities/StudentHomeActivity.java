@@ -1,0 +1,89 @@
+package com.example.mindmatters.activities;
+
+import android.os.Bundle;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.example.mindmatters.R;
+import com.example.mindmatters.classes.Appointment;
+import com.example.mindmatters.classes.User;
+import com.example.mindmatters.fragments.AppointmentDetailsFragment;
+import com.example.mindmatters.fragments.AppointmentsFragment;
+import com.example.mindmatters.fragments.BookingFragment;
+import com.example.mindmatters.fragments.CounsellorDetailsFragment;
+import com.example.mindmatters.fragments.StudentHomeFragment;
+import com.example.mindmatters.fragments.StudentProfilePlaceholderFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class StudentHomeActivity extends AppCompatActivity {
+    private BottomNavigationView bottomNavigationView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_student_home);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        bottomNavigationView = findViewById(R.id.student_bottom_nav);
+        bottomNavigationView.setItemActiveIndicatorEnabled(false);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_appointments) {
+                replaceTopLevelFragment(new AppointmentsFragment());
+                return true;
+            } else if (itemId == R.id.navigation_profile) {
+                replaceTopLevelFragment(new StudentProfilePlaceholderFragment());
+                return true;
+            } else if (itemId == R.id.navigation_home) {
+                replaceTopLevelFragment(new StudentHomeFragment());
+                return true;
+            }
+            return false;
+        });
+
+        if (savedInstanceState == null) {
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
+    }
+
+    private void replaceTopLevelFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.student_fragment_container, fragment)
+                .commit();
+    }
+
+    public void openBooking(User counsellor) {
+        openDetailFragment(BookingFragment.newInstance(counsellor));
+    }
+
+    public void openCounsellorDetails(User counsellor) {
+        openDetailFragment(CounsellorDetailsFragment.newInstance(counsellor));
+    }
+
+    public void openAppointmentDetails(Appointment appointment) {
+        openDetailFragment(AppointmentDetailsFragment.newInstance(appointment));
+    }
+
+    public void openAppointmentsTab() {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_appointments);
+    }
+
+    private void openDetailFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.student_fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+}

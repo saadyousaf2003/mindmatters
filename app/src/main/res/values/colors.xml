@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="student_primary">#3A7C98</color>
+    <color name="student_primary_button">#3A7C98</color>
+    <color name="student_primary_selected">#316B87</color>
+    <color name="student_secondary">#000000</color>
+    <color name="student_surface">#FFFFFFFF</color>
+    <color name="student_bg">#FFFFFFFF</color>
+    <color name="student_chip">#FFFFFFFF</color>
+</resources>

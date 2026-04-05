@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "573927683927",
+    "project_id": "mind-matters-3a3e1",
+    "storage_bucket": "mind-matters-3a3e1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573927683927:android:45e273c036d01cd2a8b012",
+        "android_client_info": {
+          "package_name": "com.example.mindmatters"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXnwsfHx1OkeH_X12sDA3o5VY5wF0gHwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

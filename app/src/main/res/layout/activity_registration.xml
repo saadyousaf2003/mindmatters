@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation = "vertical"
+    tools:context=".activities.RegistrationActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mindmatters"
+        android:textSize="35sp"
+        android:textColor="#3A7C98"
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:paddingTop="25dp"
+        android:paddingBottom="10dp">
+    </TextView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#3A7C98">
+    </View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="35dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:textAlignment="center"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            android:textColor="#3A7C98">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create an account"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:layout_marginBottom="5dp">
+        </TextView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fullname"
+                android:hint="@string/full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:hint="@string/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"
+            android:layout_marginBottom="20dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confirm_password"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/choose_role"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
+
+            <RadioButton
+                android:id="@+id/radio_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student"
+                android:checked="true">
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/radio_counsellor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Counsellor" >
+            </RadioButton>
+
+        </RadioGroup>
+
+
+        <Button
+            android:id="@+id/register_button"
+            android:text="Sign Up"
+            android:textSize="23sp"
+            android:textColor="?attr/colorOnSurface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#3A7C98"
+            android:layout_marginBottom="20dp">
+        </Button>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/back_button"
+        android:drawableLeft="@drawable/baseline_arrow_back_ios_24"
+        android:drawableTint="#3A7C98"
+        android:text="Back"
+        android:textSize="23sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#3A7C98"
+        android:layout_marginBottom="55dp"
+        android:backgroundTint="?attr/colorSurface">
+    </Button>
+
+</LinearLayout>

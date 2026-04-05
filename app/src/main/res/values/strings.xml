@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Mind Matters</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="mindmatters">MindMatters</string>
+    <string name="sign_up">Sign Up!</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up_reg">Sign Up</string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="nav_appointments">Appointments</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_profile">Profile</string>
+    <string name="book_session">Book Session</string>
+    <string name="view_details">View Details</string>
+    <string name="confirm_booking">Confirm Booking</string>
+    <string name="select_meeting_mode">Select meeting mode</string>
+    <string name="no_slots_available">No booking slots available for this week.</string>
+    <string name="placeholder_coming_soon">This page is ready for future functionality.</string>
+</resources>
