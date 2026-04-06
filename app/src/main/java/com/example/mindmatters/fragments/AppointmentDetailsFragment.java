@@ -16,6 +16,10 @@ import com.example.mindmatters.R;
 import com.example.mindmatters.classes.Appointment;
 import com.example.mindmatters.utils.StudentBookingUtils;
 
+/**
+ * Detail fragment for a booked appointment and its follow-up actions.
+ * Outstanding issues: reschedule, cancel, and pre-session form actions are placeholders only.
+ */
 public class AppointmentDetailsFragment extends Fragment {
     private static final String ARG_COUNSELLOR_NAME = "arg_counsellor_name";
     private static final String ARG_APPOINTMENT_DATE = "arg_appointment_date";
@@ -23,6 +27,7 @@ public class AppointmentDetailsFragment extends Fragment {
     private static final String ARG_END_TIME = "arg_end_time";
     private static final String ARG_MEETING_MODE = "arg_meeting_mode";
 
+    // Packs appointment fields into a fragment instance.
     public static AppointmentDetailsFragment newInstance(Appointment appointment) {
         AppointmentDetailsFragment fragment = new AppointmentDetailsFragment();
         Bundle args = new Bundle();
@@ -35,16 +40,19 @@ public class AppointmentDetailsFragment extends Fragment {
         return fragment;
     }
 
+    // Required empty constructor for fragment recreation.
     public AppointmentDetailsFragment() {
     }
 
     @Nullable
     @Override
+    // Inflates the appointment details layout.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_appointment_details, container, false);
     }
 
     @Override
+    // Binds the selected appointment into the placeholder detail actions.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle args = getArguments();

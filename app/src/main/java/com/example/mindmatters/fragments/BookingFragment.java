@@ -34,6 +34,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Student booking fragment that lets a user choose a meeting mode and a weekly time slot for a counsellor.
+ * Outstanding issues: rescheduling reuse, loading states, and old flat Firestore counsellor records are not fully handled.
+ */
 public class BookingFragment extends Fragment {
     private static final String ARG_COUNSELLOR = "arg_counsellor";
 
@@ -48,6 +52,7 @@ public class BookingFragment extends Fragment {
     private TextView noSlotsText;
     private Button confirmBookingButton;
 
+    // Packs a counsellor into a booking fragment instance.
     public static BookingFragment newInstance(Counsellor counsellor) {
         BookingFragment fragment = new BookingFragment();
         Bundle args = new Bundle();
@@ -56,16 +61,19 @@ public class BookingFragment extends Fragment {
         return fragment;
     }
 
+    // Required empty constructor for fragment recreation.
     public BookingFragment() {
     }
 
     @Nullable
     @Override
+    // Inflates the booking layout.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_booking, container, false);
     }
 
     @Override
+    // Binds counsellor data, slot navigation, and booking actions.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
@@ -115,6 +123,7 @@ public class BookingFragment extends Fragment {
         confirmBookingButton.setOnClickListener(v -> confirmBooking());
     }
 
+    // Populates the meeting mode dropdown from the counsellor schedule.
     private void setupMeetingModes() {
         List<String> meetingModes = new ArrayList<>(counsellor.getSchedule().getAvailableMeetingModes());
         if (meetingModes.isEmpty()) {
@@ -126,6 +135,7 @@ public class BookingFragment extends Fragment {
         meetingModeSpinner.setAdapter(adapter);
     }
 
+    // Rebuilds the visible slots for the selected week.
     private void renderCurrentWeek() {
         weekRangeText.setText(StudentBookingUtils.buildWeekLabel(selectedWeekStart));
         List<StudentBookingUtils.DisplaySlot> displaySlots = StudentBookingUtils.toDisplaySlots(counsellor.getSchedule().getAvailableSlots(), selectedWeekStart);
@@ -133,6 +143,7 @@ public class BookingFragment extends Fragment {
         noSlotsText.setVisibility(displaySlots.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
+    // Attempts to save a booking and its clash lock in Firestore.
     private void confirmBooking() {
         if (auth.getCurrentUser() == null) {
             Toast.makeText(requireContext(), "Please log in again.", Toast.LENGTH_SHORT).show();

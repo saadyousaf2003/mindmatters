@@ -2,12 +2,17 @@ package com.example.mindmatters.classes;
 
 import java.io.Serializable;
 
+/**
+ * Profile model that holds student-facing counsellor biography and experience details.
+ * Outstanding issues: optional fields like location, gender, and richer media are still missing.
+ */
 public class CounsellorProfile implements Serializable {
     private String bio;
     private String speciality;
     private int yearsExperience;
     private String profileImageUrl;
 
+    // Creates default profile values for a counsellor.
     public CounsellorProfile() {
         bio = "";
         speciality = "General Support";
@@ -15,6 +20,7 @@ public class CounsellorProfile implements Serializable {
         profileImageUrl = "";
     }
 
+    // Gets and updates student-facing counsellor profile fields.
     public String getBio() {
         return bio == null || bio.isEmpty() ? "Bio coming soon." : bio;
     }

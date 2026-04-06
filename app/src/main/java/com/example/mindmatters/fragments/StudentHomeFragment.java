@@ -25,6 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Student home fragment that loads all counsellors and delegates card actions back to the host activity.
+ * Outstanding issues: filtering, searching, and remote image support are not implemented yet.
+ */
 public class StudentHomeFragment extends Fragment {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -32,16 +36,19 @@ public class StudentHomeFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView emptyText;
 
+    // Required empty constructor for fragment recreation.
     public StudentHomeFragment() {
     }
 
     @Nullable
     @Override
+    // Inflates the student home tab layout.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_student_home, container, false);
     }
 
     @Override
+    // Sets up the counsellor list and its card actions.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.counsellors_recycler);
@@ -67,6 +74,7 @@ public class StudentHomeFragment extends Fragment {
         loadCounsellors();
     }
 
+    // Loads all counsellors visible to the current student.
     private void loadCounsellors() {
         Student currentStudent = new Student();
         if (auth.getCurrentUser() != null) {

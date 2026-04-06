@@ -15,10 +15,15 @@ import com.example.mindmatters.utils.StudentBookingUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RecyclerView adapter that presents weekly booking slots using single-selection list behavior.
+ * Outstanding issues: booked or expired slots are not visually disabled inside the list itself.
+ */
 public class BookingSlotAdapter extends RecyclerView.Adapter<BookingSlotAdapter.SlotViewHolder> {
     private final List<StudentBookingUtils.DisplaySlot> displaySlots = new ArrayList<>();
     private int selectedPosition = RecyclerView.NO_POSITION;
 
+    // Replaces the current slot list and clears the previous selection.
     public void submitList(List<StudentBookingUtils.DisplaySlot> slots) {
         displaySlots.clear();
         displaySlots.addAll(slots);
@@ -26,6 +31,7 @@ public class BookingSlotAdapter extends RecyclerView.Adapter<BookingSlotAdapter.
         notifyDataSetChanged();
     }
 
+    // Returns the currently selected slot, if one exists.
     public StudentBookingUtils.DisplaySlot getSelectedSlot() {
         if (selectedPosition < 0 || selectedPosition >= displaySlots.size()) {
             return null;
@@ -35,12 +41,14 @@ public class BookingSlotAdapter extends RecyclerView.Adapter<BookingSlotAdapter.
 
     @NonNull
     @Override
+    // Inflates a slot row for the booking list.
     public SlotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_slot_card, parent, false);
         return new SlotViewHolder(view);
     }
 
     @Override
+    // Binds slot text and selection state into the row.
     public void onBindViewHolder(@NonNull SlotViewHolder holder, int position) {
         StudentBookingUtils.DisplaySlot slot = displaySlots.get(position);
         holder.dayText.setText(slot.getDayLabel());
@@ -51,10 +59,12 @@ public class BookingSlotAdapter extends RecyclerView.Adapter<BookingSlotAdapter.
     }
 
     @Override
+    // Returns the number of slots in the list.
     public int getItemCount() {
         return displaySlots.size();
     }
 
+    // Updates the single selected row in the list.
     private void selectPosition(int position) {
         int previousPosition = selectedPosition;
         selectedPosition = position;

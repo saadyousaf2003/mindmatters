@@ -33,6 +33,10 @@ import com.example.mindmatters.classes.Student;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Registration activity that creates Firebase Auth accounts and stores the matching app user record.
+ * Outstanding issues: registration still seeds only very basic counsellor profile and schedule defaults.
+ */
 public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -46,6 +50,7 @@ public class RegistrationActivity extends AppCompatActivity {
     RadioGroup chooseRole;
 
     @Override
+    // Initializes the registration screen and its actions.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);
@@ -172,6 +177,7 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
+    // Builds default sample slots for a new counsellor account.
     private List<AvailableSlot> buildDefaultCounsellorSlots() {
         List<AvailableSlot> defaultSlots = new ArrayList<>();
         defaultSlots.add(new AvailableSlot("TUESDAY", "1:00 PM", "2:00 PM"));

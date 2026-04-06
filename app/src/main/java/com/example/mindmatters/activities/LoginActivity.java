@@ -26,7 +26,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-//code for login screen which also functions as the launcher screen
+/**
+ * Launcher activity that authenticates users and routes them to the correct role-based screen.
+ * Outstanding issues: admin routing is not implemented and authentication handling to be improved.
+ */
 public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
+    // Initializes the login screen and its actions.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        EdgeToEdge.enable(this);

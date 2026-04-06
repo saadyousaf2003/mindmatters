@@ -10,9 +10,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.mindmatters.R;
 
+/**
+ * Placeholder entry point for the counsellor role.
+ * Outstanding issues: the counsellor dashboard flow has not been implemented yet.
+ */
 public class CounsellorHomeActivity extends AppCompatActivity {
 
     @Override
+    // Sets up the placeholder counsellor home screen.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);

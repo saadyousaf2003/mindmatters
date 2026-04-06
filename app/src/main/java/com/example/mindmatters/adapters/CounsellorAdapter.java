@@ -15,14 +15,20 @@ import com.example.mindmatters.classes.Counsellor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RecyclerView adapter that binds counsellor summary data into the student home list.
+ * Outstanding issues: profile images are still using a shared placeholder instead of remote image loading.
+ */
 public class CounsellorAdapter extends RecyclerView.Adapter<CounsellorAdapter.CounsellorViewHolder> {
     private final List<Counsellor> counsellors = new ArrayList<>();
     private final CounsellorActionListener listener;
 
+    // Stores the callback used when a counsellor card action is pressed.
     public CounsellorAdapter(CounsellorActionListener listener) {
         this.listener = listener;
     }
 
+    // Replaces the displayed counsellor list.
     public void submitList(List<Counsellor> users) {
         counsellors.clear();
         counsellors.addAll(users);
@@ -31,12 +37,14 @@ public class CounsellorAdapter extends RecyclerView.Adapter<CounsellorAdapter.Co
 
     @NonNull
     @Override
+    // Inflates a counsellor summary card.
     public CounsellorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_counsellor_card, parent, false);
         return new CounsellorViewHolder(view);
     }
 
     @Override
+    // Binds one counsellor into the summary card.
     public void onBindViewHolder(@NonNull CounsellorViewHolder holder, int position) {
         Counsellor counsellor = counsellors.get(position);
         holder.nameText.setText(counsellor.getName());
@@ -47,6 +55,7 @@ public class CounsellorAdapter extends RecyclerView.Adapter<CounsellorAdapter.Co
     }
 
     @Override
+    // Returns the number of counsellor cards to show.
     public int getItemCount() {
         return counsellors.size();
     }

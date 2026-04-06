@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Student tab fragment that loads and displays upcoming booked appointments from Firestore.
+ * Outstanding issues: it currently shows only booked future-style entries and has no past-history section.
+ */
 public class AppointmentsFragment extends Fragment {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -33,16 +37,19 @@ public class AppointmentsFragment extends Fragment {
     private ProgressBar progressBar;
     private TextView emptyText;
 
+    // Required empty constructor for fragment recreation.
     public AppointmentsFragment() {
     }
 
     @Nullable
     @Override
+    // Inflates the appointments tab layout.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_appointments, container, false);
     }
 
     @Override
+    // Sets up the appointment list and its card actions.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.appointments_recycler);
@@ -58,11 +65,13 @@ public class AppointmentsFragment extends Fragment {
     }
 
     @Override
+    // Refreshes the list whenever the fragment resumes.
     public void onResume() {
         super.onResume();
         loadAppointments();
     }
 
+    // Loads the current student's booked appointments from Firestore.
     private void loadAppointments() {
         if (auth.getCurrentUser() == null) {
             emptyText.setVisibility(View.VISIBLE);

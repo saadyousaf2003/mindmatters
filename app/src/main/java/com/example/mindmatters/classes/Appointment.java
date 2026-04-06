@@ -4,6 +4,10 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
+/**
+ * Domain model for a booked session between a student and a counsellor.
+ * Outstanding issues: reschedule, cancellation history, and intake form linkage are not stored yet.
+ */
 public class Appointment implements Serializable {
     private String appointmentId;
     private String studentId;
@@ -19,9 +23,11 @@ public class Appointment implements Serializable {
     private String studentLockId;
     private Timestamp createdAt;
 
+    // Required empty constructor for Firestore object mapping.
     public Appointment() {
     }
 
+    // Gets and updates the stored appointment fields used by Firestore and the student UI.
     public String getAppointmentId() {
         return appointmentId;
     }
@@ -126,20 +132,24 @@ public class Appointment implements Serializable {
         this.createdAt = createdAt;
     }
 
+    // Checks whether this appointment belongs to a given student.
     public boolean belongsToStudent(String studentId) {
         return studentId != null && studentId.equals(this.studentId);
     }
 
+    // Checks whether this appointment uses the same date and time block.
     public boolean matchesTimeBlock(String appointmentDate, String startTime, String endTime) {
         return equalsValue(this.appointmentDate, appointmentDate)
                 && equalsValue(this.startTime, startTime)
                 && equalsValue(this.endTime, endTime);
     }
 
+    // Returns whether the appointment is still in the booked state.
     public boolean isBooked() {
         return "BOOKED".equalsIgnoreCase(status);
     }
 
+    // Compares two possibly null string values.
     private boolean equalsValue(String first, String second) {
         if (first == null) {
             return second == null;

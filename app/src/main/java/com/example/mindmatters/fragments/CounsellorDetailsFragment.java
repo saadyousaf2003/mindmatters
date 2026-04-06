@@ -13,9 +13,14 @@ import androidx.fragment.app.Fragment;
 import com.example.mindmatters.R;
 import com.example.mindmatters.classes.Counsellor;
 
+/**
+ * Detail fragment that shows the full student-facing profile and schedule for a counsellor.
+ * Outstanding issues: this screen is read-only and still uses placeholder-friendly fallback data.
+ */
 public class CounsellorDetailsFragment extends Fragment {
     private static final String ARG_COUNSELLOR = "arg_counsellor";
 
+    // Packs a counsellor into a details fragment instance.
     public static CounsellorDetailsFragment newInstance(Counsellor counsellor) {
         CounsellorDetailsFragment fragment = new CounsellorDetailsFragment();
         Bundle args = new Bundle();
@@ -24,16 +29,19 @@ public class CounsellorDetailsFragment extends Fragment {
         return fragment;
     }
 
+    // Required empty constructor for fragment recreation.
     public CounsellorDetailsFragment() {
     }
 
     @Nullable
     @Override
+    // Inflates the counsellor details layout.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_counsellor_details, container, false);
     }
 
     @Override
+    // Binds counsellor profile and schedule data into the screen.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Counsellor counsellor = null;

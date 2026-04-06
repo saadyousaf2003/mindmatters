@@ -4,17 +4,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Schedule model that owns meeting mode availability and the counsellor's bookable time slots.
+ * Outstanding issues: it does not yet support exceptions, real-time availability updates, or slot locking by itself.
+ */
 public class CounsellorSchedule implements Serializable {
     private boolean supportsOnline;
     private boolean supportsInPerson;
     private List<AvailableSlot> availableSlots;
 
+    // Creates default schedule values for a counsellor.
     public CounsellorSchedule() {
         supportsOnline = true;
         supportsInPerson = true;
         availableSlots = new ArrayList<>();
     }
 
+    // Gets and updates the available meeting modes and slots for this counsellor.
     public boolean isSupportsOnline() {
         return supportsOnline;
     }
@@ -39,10 +45,12 @@ public class CounsellorSchedule implements Serializable {
         this.availableSlots = availableSlots;
     }
 
+    // Returns whether the current schedule can accept a new booking.
     public boolean canAcceptBookings() {
         return supportsOnline || supportsInPerson;
     }
 
+    // Builds simple text labels used by the current student UI.
     public List<String> getAvailableMeetingModes() {
         List<String> meetingModes = new ArrayList<>();
         if (supportsOnline) {
